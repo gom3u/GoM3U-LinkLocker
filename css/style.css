@@ -1,0 +1,359 @@
+/* ===========================================================
+   GoM3U Link Locker — style.css
+   Design language: "signal lock" — a dark broadcast console.
+   Palette:
+     --bg        #0A0E16  deep-space navy
+     --panel     rgba(255,255,255,0.05) glass
+     --accent    #22D3B8  signal cyan  (theme-editable)
+     --accent-2  #7C6CFF  violet, secondary accents
+     --danger    #FF5C7A
+   Type: 'Space Grotesk' (display) + 'Inter' (body/UI)
+   =========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --bg: #0a0e16;
+  --bg-elevated: #0e1420;
+  --panel: rgba(255, 255, 255, 0.05);
+  --panel-border: rgba(255, 255, 255, 0.09);
+  --text: #e6ecf5;
+  --text-dim: #94a3b8;
+  --accent: #22d3b8;
+  --accent-2: #7c6cff;
+  --danger: #ff5c7a;
+  --success: #22d3b8;
+  --radius: 18px;
+  --radius-sm: 10px;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-user-select: none;
+  user-select: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 0%, rgba(124, 108, 255, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(34, 211, 184, 0.12), transparent 40%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+img { max-width: 100%; }
+
+.container {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+}
+.brand .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+.brand-tagline {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+.telegram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border: 1px solid var(--panel-border);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--panel);
+}
+
+/* ---------- Announcement bar ---------- */
+.announcement-bar {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 8px 0;
+  color: #071018;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.announcement-bar span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 18s linear infinite;
+}
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ---------- Glass panel ---------- */
+.glass {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* ---------- Hero / meta card ---------- */
+.hero {
+  text-align: center;
+  padding: 30px 24px 10px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2.3rem);
+  margin: 0 0 6px;
+}
+.hero p {
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.meta-card {
+  margin: 22px 0;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.meta-item .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+.meta-item .value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+/* ---------- Steps ---------- */
+.step {
+  display: none;
+  padding: 28px 22px;
+  margin: 18px 0;
+  text-align: center;
+}
+.step.active { display: block; animation: fade-up 0.35s ease; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  color: #071018;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+}
+.btn-block { width: 100%; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+.ad-slot {
+  min-height: 100px;
+  margin: 16px 0;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+/* ---------- Countdown ring (signature element) ---------- */
+.ring-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 8px auto 18px;
+}
+.ring-wrap svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.ring-track {
+  fill: none;
+  stroke: var(--panel-border);
+  stroke-width: 8;
+}
+.ring-progress {
+  fill: none;
+  stroke: url(#ringGradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+.ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+}
+.ring-ticks {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(var(--panel-border) 0 2deg, transparent 2deg 30deg);
+  mask: radial-gradient(circle, transparent 66px, black 67px);
+  -webkit-mask: radial-gradient(circle, transparent 66px, black 67px);
+  opacity: 0.5;
+}
+
+/* ---------- Unlocked panel ---------- */
+.url-box {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+.url-box input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--panel-border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.85rem;
+  user-select: text;
+}
+.relock-notice {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ---------- Skeleton loader ---------- */
+.skeleton { padding: 20px; }
+.skeleton .bar {
+  height: 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--panel) 25%, rgba(255,255,255,0.12) 50%, var(--panel) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+#main-content { opacity: 0; transition: opacity 0.4s ease; }
+#main-content.visible { opacity: 1; }
+#skeleton-loader.hidden { display: none; }
+
+/* ---------- Toasts ---------- */
+#toast-root {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+.toast {
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--panel-border);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast-success { border-color: var(--accent); }
+.toast-error { border-color: var(--danger); }
+
+/* ---------- Offline notice ---------- */
+#offline-notice {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: var(--danger);
+  color: #1a0508;
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 6px;
+  font-weight: 600;
+  z-index: 1000;
+}
+
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  padding: 30px 20px 60px;
+}
+
+/* ---------- Android TV friendliness ---------- */
+@media (min-width: 900px) {
+  .container { max-width: 720px; }
+  .btn { font-size: 1.05rem; padding: 16px 34px; }
+}
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .meta-card { grid-template-columns: 1fr 1fr; padding: 16px; }
+  .ring-wrap { width: 120px; height: 120px; }
+  .ring-label { font-size: 1.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
