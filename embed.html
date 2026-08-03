@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GoM3U Locker (Embed)</title>
+<meta name="robots" content="noindex" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  /* Embed mode: no page chrome, transparent-friendly, auto height */
+  html, body { background: var(--bg); }
+  body { padding: 0; }
+  .topbar, footer { display: none; }
+  #main-content, #skeleton-loader { padding-top: 10px; }
+</style>
+</head>
+<body>
+
+<div id="offline-notice" hidden>You're offline — some features may not work.</div>
+<div class="announcement-bar glass" id="announcement-bar" hidden><span id="announcement-text"></span></div>
+
+<div id="skeleton-loader" class="container">
+  <div class="skeleton glass" style="border-radius:18px;">
+    <div class="bar" style="width:60%"></div>
+    <div class="bar" style="width:90%"></div>
+  </div>
+</div>
+
+<main id="main-content" class="container">
+  <section class="meta-card glass">
+    <div class="meta-item"><div class="label">Playlist</div><div class="value" id="meta-name">—</div></div>
+    <div class="meta-item"><div class="label">Version</div><div class="value" id="meta-version">—</div></div>
+    <div class="meta-item"><div class="label">Channels</div><div class="value" id="meta-channels">—</div></div>
+    <div class="meta-item"><div class="label">File Size</div><div class="value" id="meta-size">—</div></div>
+    <div class="meta-item" style="grid-column: 1 / -1;"><div class="label">Last Updated</div><div class="value" id="meta-updated">—</div></div>
+  </section>
+
+  <section id="step-locked" class="step glass active">
+    <p style="color:var(--text-dim); margin-top:0;">This playlist is locked. Complete two short steps to unlock it.</p>
+    <button id="get-link-btn" class="btn">Get Link</button>
+  </section>
+
+  <section id="step-ad1" class="step glass">
+    <p style="color:var(--text-dim);">Step 1 of 2</p>
+    <div id="ad-slot-1" class="ad-slot">Advertisement</div>
+    <div class="ring-wrap" id="ring1">
+      <svg viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22D3B8" /><stop offset="100%" stop-color="#7C6CFF" />
+          </linearGradient>
+        </defs>
+        <circle class="ring-track" cx="60" cy="60" r="54" />
+        <circle class="ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="ring-label">5</div>
+    </div>
+    <button id="ad1-continue" class="btn" disabled>Continue</button>
+  </section>
+
+  <section id="step-ad2" class="step glass">
+    <p style="color:var(--text-dim);">Step 2 of 2</p>
+    <div id="ad-slot-2" class="ad-slot">Advertisement</div>
+    <div class="ring-wrap" id="ring2">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-track" cx="60" cy="60" r="54" />
+        <circle class="ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="ring-label">5</div>
+    </div>
+    <button id="ad2-unlock" class="btn" disabled>Unlock</button>
+  </section>
+
+  <section id="step-verify" class="step glass">
+    <div class="ring-ticks"></div>
+    <div class="ring-wrap" id="ring-verify">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-track" cx="60" cy="60" r="54" />
+        <circle class="ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="ring-label">20</div>
+    </div>
+    <p id="verify-label" style="color:var(--text-dim);">Verifying… 20s</p>
+  </section>
+
+  <section id="step-unlocked" class="step glass">
+    <h2 style="font-family:var(--font-display); margin-top:0;">🔓 Playlist Unlocked</h2>
+    <div class="url-box"><input id="playlist-url" type="text" readonly /></div>
+    <div class="btn-row">
+      <button id="copy-btn" class="btn btn-outline">Copy URL</button>
+      <button id="open-btn" class="btn btn-outline">Open</button>
+      <button id="download-btn" class="btn">Download</button>
+    </div>
+    <p class="relock-notice" id="relock-notice" hidden>🔒 Re-locking in <span id="relock-countdown">120</span>s</p>
+  </section>
+</main>
+
+<div id="toast-root"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+<script src="js/config.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  // Auto-resize the parent <iframe> on Blogger/any host that supports
+  // postMessage. Falls back silently if the host page ignores it.
+  function reportHeight() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage({ gom3uEmbedHeight: height }, "*");
+  }
+  new ResizeObserver(reportHeight).observe(document.body);
+  window.addEventListener("load", reportHeight);
+</script>
+</body>
+</html>

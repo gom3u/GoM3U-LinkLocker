@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>GoM3U — Premium IPTV Playlist Access</title>
+<meta name="description" content="Unlock the latest GoM3U IPTV playlist — updated regularly, verified, and ready for any player." />
+
+<!-- SEO -->
+<link rel="canonical" href="https://YOUR_USERNAME.github.io/GoM3U-LinkLocker/" />
+<meta name="robots" content="index, follow" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="GoM3U — Premium IPTV Playlist Access" />
+<meta property="og:description" content="Unlock the latest GoM3U IPTV playlist in a few quick steps." />
+<meta property="og:image" content="assets/logo.png" />
+<meta property="og:url" content="https://YOUR_USERNAME.github.io/GoM3U-LinkLocker/" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="GoM3U — Premium IPTV Playlist Access" />
+<meta name="twitter:description" content="Unlock the latest GoM3U IPTV playlist in a few quick steps." />
+<meta name="twitter:image" content="assets/logo.png" />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0A0E16" />
+<link rel="icon" href="assets/favicon.png" />
+<link rel="apple-touch-icon" href="assets/favicon.png" />
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="offline-notice" hidden>You're offline — some features may not work.</div>
+
+<div class="announcement-bar glass" id="announcement-bar" hidden>
+  <span id="announcement-text"></span>
+</div>
+
+<header class="topbar container">
+  <div class="brand"><span class="dot"></span> GoM3U</div>
+  <a class="telegram-link" id="telegram-link" href="https://t.me/gom3u" target="_blank" rel="noopener">Support ↗</a>
+</header>
+
+<!-- Skeleton loader shown until Firestore data arrives -->
+<div id="skeleton-loader" class="container">
+  <div class="skeleton glass" style="border-radius:18px;">
+    <div class="bar" style="width:60%"></div>
+    <div class="bar" style="width:90%"></div>
+    <div class="bar" style="width:40%"></div>
+  </div>
+</div>
+
+<main id="main-content" class="container">
+
+  <section class="hero">
+    <h1>Unlock Your Playlist</h1>
+    <p>Fresh channels, verified links — three quick steps to your M3U.</p>
+  </section>
+
+  <section class="meta-card glass">
+    <div class="meta-item"><div class="label">Playlist</div><div class="value" id="meta-name">—</div></div>
+    <div class="meta-item"><div class="label">Version</div><div class="value" id="meta-version">—</div></div>
+    <div class="meta-item"><div class="label">Channels</div><div class="value" id="meta-channels">—</div></div>
+    <div class="meta-item"><div class="label">File Size</div><div class="value" id="meta-size">—</div></div>
+    <div class="meta-item" style="grid-column: 1 / -1;"><div class="label">Last Updated</div><div class="value" id="meta-updated">—</div></div>
+  </section>
+
+  <!-- Step: locked -->
+  <section id="step-locked" class="step glass active">
+    <p style="color:var(--text-dim); margin-top:0;">This playlist is locked. Complete two short steps to verify you're human and unlock it.</p>
+    <button id="get-link-btn" class="btn">Get Link</button>
+  </section>
+
+  <!-- Step: ad 1 -->
+  <section id="step-ad1" class="step glass">
+    <p style="color:var(--text-dim);">Step 1 of 2</p>
+    <div id="ad-slot-1" class="ad-slot">Advertisement</div>
+    <div class="ring-wrap" id="ring1">
+      <svg viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22D3B8" />
+            <stop offset="100%" stop-color="#7C6CFF" />
+          </linearGradient>
+        </defs>
+        <circle class="ring-track" cx="60" cy="60" r="54" />
+        <circle class="ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="ring-label">5</div>
+    </div>
+    <button id="ad1-continue" class="btn" disabled>Continue</button>
+  </section>
+
+  <!-- Step: ad 2 -->
+  <section id="step-ad2" class="step glass">
+    <p style="color:var(--text-dim);">Step 2 of 2</p>
+    <div id="ad-slot-2" class="ad-slot">Advertisement</div>
+    <div class="ring-wrap" id="ring2">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-track" cx="60" cy="60" r="54" />
+        <circle class="ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="ring-label">5</div>
+    </div>
+    <button id="ad2-unlock" class="btn" disabled>Unlock</button>
+  </section>
+
+  <!-- Step: final verification -->
+  <section id="step-verify" class="step glass">
+    <div class="ring-ticks"></div>
+    <div class="ring-wrap" id="ring-verify">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-track" cx="60" cy="60" r="54" />
+        <circle class="ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="ring-label">20</div>
+    </div>
+    <p id="verify-label" style="color:var(--text-dim);">Verifying… 20s</p>
+  </section>
+
+  <!-- Step: unlocked -->
+  <section id="step-unlocked" class="step glass">
+    <h2 style="font-family:var(--font-display); margin-top:0;">🔓 Playlist Unlocked</h2>
+    <div class="url-box">
+      <input id="playlist-url" type="text" readonly />
+    </div>
+    <div class="btn-row">
+      <button id="copy-btn" class="btn btn-outline">Copy URL</button>
+      <button id="open-btn" class="btn btn-outline">Open Playlist</button>
+      <button id="download-btn" class="btn">Download</button>
+    </div>
+    <p class="relock-notice" id="relock-notice" hidden>
+      🔒 Re-locking in <span id="relock-countdown">120</span>s
+    </p>
+  </section>
+
+</main>
+
+<footer>© <span id="year"></span> GoM3U · All playlists are user-submitted and provided as-is.</footer>
+
+<div id="toast-root"></div>
+
+<!-- Firebase (compat SDK — no build step needed for GitHub Pages) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+<script src="js/config.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

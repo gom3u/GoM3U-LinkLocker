@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Dashboard — GoM3U</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="assets/favicon.png" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="dot"></span> GoM3U</div>
+    <button class="nav-item active" data-panel="dashboard">📊 Dashboard</button>
+    <button class="nav-item" data-panel="playlist">🎬 Playlist</button>
+    <button class="nav-item" data-panel="ads">📢 Ads</button>
+    <button class="nav-item" data-panel="announcement">📣 Announcement</button>
+    <button class="nav-item" data-panel="settings">⚙️ Settings</button>
+    <button class="nav-item" data-panel="analytics">📈 Analytics</button>
+    <div class="sidebar-footer">
+      <button id="logout-btn" class="nav-item">🚪 Logout</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="topbar-admin">
+      <button id="menu-toggle">☰</button>
+      <div style="color:var(--text-dim); font-size:0.85rem;">Signed in as <span id="admin-email"></span></div>
+    </div>
+
+    <!-- Dashboard -->
+    <section id="panel-dashboard" class="panel active">
+      <h2>Dashboard</h2>
+      <div class="cards-grid">
+        <div class="stat-card glass"><div class="label">Total Unlocks</div><div class="value" id="card-total-unlocks">0</div></div>
+        <div class="stat-card glass"><div class="label">Today's Unlocks</div><div class="value" id="card-today-unlocks">0</div></div>
+        <div class="stat-card glass"><div class="label">Playlist Version</div><div class="value" id="card-playlist-version">-</div></div>
+      </div>
+      <p style="color:var(--text-dim); font-size:0.85rem;">Cards update in realtime as visitors unlock the playlist.</p>
+    </section>
+
+    <!-- Playlist Manager -->
+    <section id="panel-playlist" class="panel">
+      <h2>Playlist Manager</h2>
+      <form id="form-playlist" class="glass">
+        <div class="field">
+          <label for="p-url">Playlist URL</label>
+          <input id="p-url" name="url" type="url" required placeholder="https://example.com/playlist.m3u" />
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Playlist Name</label><input name="name" type="text" placeholder="GoM3U Ultra" /></div>
+          <div class="field"><label>Version</label><input name="version" type="text" placeholder="v2.4" /></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Channel Count</label><input name="channelCount" type="text" placeholder="12,500+" /></div>
+          <div class="field"><label>File Size</label><input name="fileSize" type="text" placeholder="4.2 MB" /></div>
+        </div>
+        <div class="field"><label>Update Date</label><input name="updatedAt" type="text" placeholder="03 Aug 2026" /></div>
+        <div class="field"><label>Telegram Link</label><input name="telegram" type="url" placeholder="https://t.me/gom3u" /></div>
+        <button class="btn btn-block" type="submit">Save Playlist</button>
+      </form>
+    </section>
+
+    <!-- Ads Manager -->
+    <section id="panel-ads" class="panel">
+      <h2>Advertisement Manager</h2>
+      <form id="form-ads" class="glass">
+        <div class="field"><label>Ad Slot 1 Code (shown during step 1)</label><textarea name="slot1Code" placeholder="&lt;script&gt;...Monetag/Adsterra snippet...&lt;/script&gt;"></textarea></div>
+        <div class="field"><label>Ad Slot 2 Code (shown during step 2)</label><textarea name="slot2Code"></textarea></div>
+        <div class="field"><label>Popup Ad Code</label><textarea name="popupCode"></textarea></div>
+        <div class="field"><label>Native Banner Code</label><textarea name="nativeBannerCode"></textarea></div>
+        <div class="btn-row" style="justify-content:flex-start;">
+          <button type="button" id="preview-ads" class="btn btn-outline">Live Preview</button>
+          <button class="btn" type="submit">Save Ads</button>
+        </div>
+      </form>
+      <div class="ad-preview-grid">
+        <div class="ad-preview-box glass" id="preview-slot1"></div>
+        <div class="ad-preview-box glass" id="preview-slot2"></div>
+      </div>
+    </section>
+
+    <!-- Announcement Manager -->
+    <section id="panel-announcement" class="panel">
+      <h2>Announcement Manager</h2>
+      <form id="form-announcement" class="glass">
+        <div class="field field-checkbox">
+          <input id="a-enabled" name="enabled" type="checkbox" />
+          <label for="a-enabled" style="margin:0;">Enabled</label>
+        </div>
+        <div class="field"><label>Scrolling Text</label><input name="text" type="text" placeholder="🔥 New channels added today!" /></div>
+        <div class="field"><label>Color</label><input name="color" type="color" value="#22D3B8" /></div>
+        <button class="btn btn-block" type="submit">Save Announcement</button>
+      </form>
+    </section>
+
+    <!-- Settings -->
+    <section id="panel-settings" class="panel">
+      <h2>Site Settings</h2>
+      <form id="form-settings" class="glass">
+        <div class="field-row">
+          <div class="field"><label>Site Name</label><input name="siteName" type="text" /></div>
+          <div class="field"><label>Tagline</label><input name="siteTagline" type="text" /></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Ad Step 1 Countdown (s)</label><input name="countdownStep1" type="number" min="1" /></div>
+          <div class="field"><label>Ad Step 2 Countdown (s)</label><input name="countdownStep2" type="number" min="1" /></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Final Verification (s)</label><input name="finalVerification" type="number" min="1" /></div>
+          <div class="field"><label>Auto Re-lock After (s)</label><input name="autoLockAfter" type="number" min="10" /></div>
+        </div>
+        <div class="field"><label>Theme Color</label><input name="themeColor" type="color" /></div>
+        <button class="btn btn-block" type="submit">Save Settings</button>
+      </form>
+    </section>
+
+    <!-- Analytics -->
+    <section id="panel-analytics" class="panel">
+      <h2>Analytics</h2>
+      <div class="chart-card glass" style="margin-bottom:16px;">
+        <h3>Unlocks — Last 14 Days</h3>
+        <canvas id="chart-daily" height="90"></canvas>
+      </div>
+      <div class="charts-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="chart-card glass"><h3>By Device</h3><canvas id="chart-devices"></canvas></div>
+        <div class="chart-card glass"><h3>By Browser</h3><canvas id="chart-browsers"></canvas></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast-root"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script src="js/config.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

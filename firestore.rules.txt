@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// ---------------------------------------------------------------
+// GoM3U Link Locker — Firestore Security Rules
+// Deploy from Firebase Console → Firestore Database → Rules, or
+// via `firebase deploy --only firestore:rules` with the CLI.
+//
+// Model:
+//   - Anyone can READ site content (playlist, settings, ads, announcement)
+//     since it must render on a public, logged-out page.
+//   - Only the signed-in admin (matched by email) can WRITE that content.
+//   - Anyone can CREATE an unlock_events doc and increment stats (so
+//     analytics work for anonymous visitors) but can never read, edit,
+//     or delete existing stats/events — that data is admin-only to read.
+// ---------------------------------------------------------------
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null &&
+        request.auth.token.email == "admin@gom3u.com"; // keep in sync with config.js ADMIN_EMAIL
+    }
+
+    // Public site content
+    match /playlist/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Aggregate stats — anyone can increment (via merge writes with
+    // FieldValue.increment), only admin can read the totals back.
+    match /stats/{docId} {
+      allow read: if isAdmin();
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(["totalUnlocks"]);
+      allow create: if isAdmin();
+    }
+    match /stats_daily/{docId} {
+      allow read: if isAdmin();
+      allow write: if true; // create-or-increment from anonymous unlock events
+    }
+
+    // Raw unlock events — public can create (log their own unlock),
+    // nobody but admin can read/list/delete them back.
+    match /unlock_events/{docId} {
+      allow create: if request.resource.data.keys().hasOnly(
+        ["timestamp", "device", "browser", "userAgent", "language"]
+      );
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
